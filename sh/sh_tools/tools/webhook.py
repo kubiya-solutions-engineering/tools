@@ -23,44 +23,27 @@ class WebhookTools:
             # Install required packages silently
             apk add --no-cache --quiet jq curl bash ca-certificates >/dev/null 2>&1
             
-            # Define hardcoded values
-            alert_id="shiphero-queue-spike-001"
-            timestamp="2025-04-17T13:00:00Z"
-            region="us-east-1"
-            alert_type="sqs_lag"
-            service_name="order-update-worker"
-            queue_name="OrderUpdateWebhooksQueue"
-            user_id="client-123"
-            aws_profile="demo"
-            log_bucket="demo-app-logs"
-            log_prefix="logs/order-update-worker/"
-            honeycomb_dataset="test"
-            trace_id="trace-abc-001"
-            
-            # Prepare the JSON payload
-            JSON_PAYLOAD=$(cat <<'EOF'
-            {
-              "alert_id": "$alert_id",
-              "timestamp": "$timestamp",
-              "region": "$region",
-              "alert_type": "$alert_type",
-              "service_name": "$service_name",
-              "queue_name": "$queue_name",
-              "user_id": "$user_id",
-              "aws_profile": "$aws_profile",
-              "log_bucket": "$log_bucket",
-              "log_prefix": "$log_prefix",
-              "honeycomb_dataset": "$honeycomb_dataset",
-              "trace_id": "$trace_id"
-            }
-EOF
-            )
+            # Define JSON payload directly with hardcoded values
+            JSON_PAYLOAD='{
+              "alert_id": "shiphero-queue-spike-001",
+              "timestamp": "2025-04-17T13:00:00Z",
+              "region": "us-east-1",
+              "alert_type": "sqs_lag",
+              "service_name": "order-update-worker",
+              "queue_name": "OrderUpdateWebhooksQueue",
+              "user_id": "client-123",
+              "aws_profile": "demo",
+              "log_bucket": "demo-app-logs",
+              "log_prefix": "logs/order-update-worker/",
+              "honeycomb_dataset": "test",
+              "trace_id": "trace-abc-001"
+            }'
             
             # Define the webhook URL
             WEBHOOK_URL="https://webhooksource-kubiya.hooks.kubiya.ai:8443/1lBN9HrWXW5PqiYQu3Bae0LvlVdlnk6Cvu7hsNyOsqJzm-VK_twVHYXAN9EvwyLhrPKzE1QhyzUeq5_kxCPvQNH0nOc="
             
             # Send the webhook
-            echo "Sending alert webhook for $alert_id..."
+            echo "Sending alert webhook..."
             RESPONSE=$(curl -s -X POST "$WEBHOOK_URL" \
                 -H "Content-Type: application/json" \
                 -d "$JSON_PAYLOAD")

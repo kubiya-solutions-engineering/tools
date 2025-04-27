@@ -38,7 +38,7 @@ class WebhookTools:
             trace_id="trace-abc-001"
             
             # Prepare the JSON payload
-            JSON_PAYLOAD=$(cat <<EOF
+            JSON_PAYLOAD=$(cat <<'EOF'
             {
               "alert_id": "$alert_id",
               "timestamp": "$timestamp",
@@ -53,7 +53,7 @@ class WebhookTools:
               "honeycomb_dataset": "$honeycomb_dataset",
               "trace_id": "$trace_id"
             }
-            EOF
+EOF
             )
             
             # Define the webhook URL
